@@ -1,0 +1,16 @@
+# IntelliJ / VSCode settings
+.idea/
+.vscode/
+
+# Backend (Spring Boot) build files
+/backend/target/
+
+# Frontend (React/Vite) dependencies and builds
+/frontend/node_modules/
+/frontend/dist/
+
+# Logs
+*.log
+
+# Environment files
+*.env

@@ -4,6 +4,7 @@ import com.aman.tasks.domain.entities.TaskList;
 import com.aman.tasks.repositories.TaskListRepository;
 import com.aman.tasks.services.TaskListService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,20 +51,24 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
 
-
+    @Transactional
     @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         if(null == taskList){
-            throw new IllegalArgumentException("Task list must have an id");
+            throw new IllegalArgumentException("Task list cannot be null");
         }
-        if (!Objects.equals(taskList.getId(), taskListId)){
-            throw  new IllegalArgumentException("Attempting to change task list ID, this is not permitted");
+        
+        // If the taskList has an ID, validate it matches the path parameter
+        if (taskList.getId() != null && !Objects.equals(taskList.getId(), taskListId)){
+            throw new IllegalArgumentException("Attempting to change task list ID, this is not permitted");
         }
+        
         TaskList existingTaskList = taskListRepository.findById(taskListId).orElseThrow(() ->
                 new IllegalArgumentException("Task list not found!"));
         existingTaskList.setTitle(taskList.getTitle());
         existingTaskList.setDescription(taskList.getDescription());
-        existingTaskList.setUpdated(taskList.getUpdated());
+        existingTaskList.setUpdated(LocalDateTime.now());
+
         return taskListRepository.save(existingTaskList);
     }
     @Override

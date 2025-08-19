@@ -7,13 +7,14 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "tasks")
-public class Task{
+public class Task {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "title" , nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description")
@@ -22,9 +23,11 @@ public class Task{
     @Column(name = "due_date")
     private LocalDateTime dueDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private TaskStatus status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
 
@@ -38,10 +41,14 @@ public class Task{
     @Column(name = "updated", nullable = false)
     private LocalDateTime updated;
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus taskStatus, TaskPriority taskPriority, TaskList taskList, LocalDateTime now, LocalDateTime localDateTime) {
+    //REQUIRED by JPA
+    public Task() {
     }
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus status, TaskPriority priority, LocalDateTime created, LocalDateTime updated, TaskList taskList) {
+    // Your full constructor
+    public Task(UUID id, String title, String description, LocalDateTime dueDate,
+                TaskStatus status, TaskPriority priority, TaskList taskList,
+                LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -52,6 +59,7 @@ public class Task{
         this.created = created;
         this.updated = updated;
     }
+
 
     public UUID getId() {
         return id;

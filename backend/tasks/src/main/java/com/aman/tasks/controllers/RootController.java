@@ -9,4 +9,9 @@ public class RootController {
     public String home(){
         return "home page";
     }
+    
+    @GetMapping("/health")
+    public String health(){
+        return "Application is running!";
+    }
 }
